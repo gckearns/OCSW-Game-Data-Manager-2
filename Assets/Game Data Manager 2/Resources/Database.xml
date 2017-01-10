@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="Windows-1252"?>
+<GameDatabase xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <gameElementLists>
+    <GameElementList>
+      <gameElementType>None</gameElementType>
+      <gameItems />
+      <ElementTypeAssemblyName>GameDataManager.Commodity, Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null</ElementTypeAssemblyName>
+    </GameElementList>
+    <GameElementList>
+      <gameElementType>None</gameElementType>
+      <gameItems />
+      <ElementTypeAssemblyName>GameDataManager.Unit, Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null</ElementTypeAssemblyName>
+    </GameElementList>
+  </gameElementLists>
+</GameDatabase>

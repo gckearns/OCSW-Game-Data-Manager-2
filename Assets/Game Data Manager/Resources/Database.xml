@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="Windows-1252"?>
+<GameDatabase xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <database>
+    <GameItemList>
+      <itemType>Commodity</itemType>
+      <_gameItemsList />
+      <myIDs />
+      <gameItems />
+    </GameItemList>
+    <GameItemList>
+      <itemType>Ship</itemType>
+      <_gameItemsList />
+      <myIDs />
+      <gameItems />
+    </GameItemList>
+    <GameItemList>
+      <itemType>Building</itemType>
+      <_gameItemsList>
+        <GameItem xsi:type="Building">
+          <itemName>New Object</itemName>
+          <itemID>newobject</itemID>
+          <costItems />
+          <costAmounts />
+          <yieldItems />
+          <yieldAmounts />
+          <cycleTime>0</cycleTime>
+          <storageTypes />
+          <storageLimits />
+          <prefabPath />
+          <category>None</category>
+          <size>1</size>
+          <power>0</power>
+          <workers>0</workers>
+          <constructionTime>0</constructionTime>
+        </GameItem>
+      </_gameItemsList>
+      <myIDs>
+        <string>newobject</string>
+      </myIDs>
+      <gameItems>
+        <GameItem xsi:type="Building">
+          <itemName>New Object</itemName>
+          <itemID>newobject</itemID>
+          <costItems />
+          <costAmounts />
+          <yieldItems />
+          <yieldAmounts />
+          <cycleTime>0</cycleTime>
+          <storageTypes />
+          <storageLimits />
+          <prefabPath />
+          <category>None</category>
+          <size>1</size>
+          <power>0</power>
+          <workers>0</workers>
+          <constructionTime>0</constructionTime>
+        </GameItem>
+      </gameItems>
+    </GameItemList>
+  </database>
+</GameDatabase>

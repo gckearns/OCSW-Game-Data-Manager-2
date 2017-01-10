@@ -1,0 +1,26 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2015
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OCSW Game Data Manager 2", "OCSW Game Data Manager 2.csproj", "{CC3F0223-A909-DCE1-59AB-CDF559353000}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OCSW Game Data Manager 2.Editor", "OCSW Game Data Manager 2.Editor.csproj", "{1187FD8B-4735-6FE0-6FB3-A60C07999AA8}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{CC3F0223-A909-DCE1-59AB-CDF559353000}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CC3F0223-A909-DCE1-59AB-CDF559353000}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CC3F0223-A909-DCE1-59AB-CDF559353000}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CC3F0223-A909-DCE1-59AB-CDF559353000}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1187FD8B-4735-6FE0-6FB3-A60C07999AA8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1187FD8B-4735-6FE0-6FB3-A60C07999AA8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1187FD8B-4735-6FE0-6FB3-A60C07999AA8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1187FD8B-4735-6FE0-6FB3-A60C07999AA8}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
