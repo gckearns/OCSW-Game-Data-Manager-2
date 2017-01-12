@@ -22,7 +22,7 @@ namespace GameDataManager
 
         public override string ToString()
         {
-            return string.Format("[GUIString]{0},{1}",label,value);
+            return string.Format("[GUIString]{0}:{1}",label,value);
         }
     }
 }
