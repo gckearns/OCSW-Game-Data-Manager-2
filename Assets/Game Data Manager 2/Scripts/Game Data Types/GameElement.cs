@@ -12,9 +12,11 @@ namespace GameDataManager
     [System.Serializable]
     public abstract class GameElement
     {
-        private GUIString guiString = new GUIString("Label");
+        private GUIString name = new GUIString("Name");
 
-        public string name { get; set; }
+        public GameElement() { }
+        
+        // public string name { get; set; }
         public string id { get; set; }
         public string source { get; set; }
         public int index { get; set; }
@@ -22,21 +24,17 @@ namespace GameDataManager
         [XmlIgnore]
         public GameElement parent { get; set; }
 
-        public GUIString GuiString {
+        public string Name {
             get
             {
-                return guiString;
+                return name.value;
             }
             set
             {
-                guiString = value;
+                name = value;
             }
         }
-
-        public GameElement()
-        {
-        }
-
+        
         public GameElement(string name, string id)
         {
             this.name = name;
@@ -45,7 +43,7 @@ namespace GameDataManager
 
         public void OnGUI()
         {
-            name = EditorGUILayout.TextField("Name", name);
+            // name = EditorGUILayout.TextField("Name", name);
             EditorGUILayout.LabelField("ID", id);
         }
     }
