@@ -3,6 +3,7 @@ using System.Collections;
 using System;
 using UnityEditor;
 using System.Xml.Serialization;
+using System.Runtime.Serialization;
 
 namespace GameDataManager
 {
@@ -11,6 +12,8 @@ namespace GameDataManager
     [System.Serializable]
     public abstract class GameElement
     {
+        private GUIString guiString = new GUIString("Label");
+
         public string name { get; set; }
         public string id { get; set; }
         public string source { get; set; }
@@ -18,6 +21,17 @@ namespace GameDataManager
         public GameElementType gameElementType { get; set; }
         [XmlIgnore]
         public GameElement parent { get; set; }
+
+        public GUIString GuiString {
+            get
+            {
+                return guiString;
+            }
+            set
+            {
+                guiString = value;
+            }
+        }
 
         public GameElement()
         {

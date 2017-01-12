@@ -12,6 +12,14 @@ namespace GameDataManager
             GameDataManagerWindow window = GetWindow<GameDataManagerWindow>();
             window.Show();
         }
+        [MenuItem("Manager/GDMW Reset")]
+        public static void Reset()
+        {
+            GameDataManagerWindow window = GetWindow<GameDataManagerWindow>();
+            GameDatabaseManager.ResetDatabase();
+            GameDatabaseManager.SaveDatabase();
+            window.Close();
+        }
 
         GUISkin gSkin;
 
@@ -178,23 +186,7 @@ namespace GameDataManager
                     if (selectedGameData != null)
                     {
                         selectedGameData.OnGUI();
-                        //switch (selectedGameData.itemType)
-                        //{
-                        //    case ItemType.Building:
-                        //        selectedGameData = EditorGameUtility.CostGUI((Building)selectedGameData);
-                        //        selectedGameData = EditorGameUtility.YieldGUI((Building)selectedGameData);
-                        //        selectedGameData = EditorGameUtility.StorageGUI((Building)selectedGameData);
-                        //        break;
-                        //    case ItemType.Commodity:
-                        //        break;
-                        //    case ItemType.Ship:
-                        //        selectedGameData = EditorGameUtility.CostGUI((Ship)selectedGameData);
-                        //        selectedGameData = EditorGameUtility.YieldGUI((Ship)selectedGameData);
-                        //        selectedGameData = EditorGameUtility.StorageGUI((Ship)selectedGameData);
-                        //        break;
-                        //    default:
-                        //        break;
-                        //}
+                        GUIHelper.GetGUI(selectedGameData);
                     }
                 }
                 EditorGUILayout.EndScrollView();

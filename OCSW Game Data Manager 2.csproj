@@ -65,6 +65,10 @@
   <ItemGroup>
     <Compile Include="Assets\Game Data Manager 2\Scripts\Game Data Collections\GameDatabase.cs" />
     <Compile Include="Assets\Game Data Manager 2\Scripts\Game Data Collections\GameElementList.cs" />
+    <Compile Include="Assets\Game Data Manager 2\Scripts\Game Data GUIs\GUIEnum.cs" />
+    <Compile Include="Assets\Game Data Manager 2\Scripts\Game Data GUIs\GUIInt.cs" />
+    <Compile Include="Assets\Game Data Manager 2\Scripts\Game Data GUIs\GUIMember.cs" />
+    <Compile Include="Assets\Game Data Manager 2\Scripts\Game Data GUIs\GUIString.cs" />
     <Compile Include="Assets\Game Data Manager 2\Scripts\Game Data Types\Building.cs" />
     <Compile Include="Assets\Game Data Manager 2\Scripts\Game Data Types\Commodity.cs" />
     <Compile Include="Assets\Game Data Manager 2\Scripts\Game Data Types\GameElement.cs" />

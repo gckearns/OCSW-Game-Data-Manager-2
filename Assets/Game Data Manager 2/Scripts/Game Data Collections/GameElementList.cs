@@ -3,6 +3,7 @@ using System.Collections;
 using System;
 using System.Collections.Generic;
 using System.Xml.Serialization;
+using System.Runtime.Serialization;
 
 namespace GameDataManager
 {
@@ -22,16 +23,7 @@ namespace GameDataManager
         {
             get
             {
-                if (gameElements == null)
-                {
-                    gameElements = new List<GameElement>();
-                }
                 return gameElements;
-            }
-
-            set
-            {
-                gameElements = value;
             }
         }
 

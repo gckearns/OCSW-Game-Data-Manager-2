@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System;
 using System.Xml.Serialization;
+using System.Runtime.Serialization;
 
 namespace GameDataManager
 {
@@ -10,11 +11,18 @@ namespace GameDataManager
     public class GameDatabase 
         //: IEnumerable
     {
-        [XmlArrayItem]
         [SerializeField]
-        public List<GameElementList> gameElementLists = new List<GameElementList>();
+        private List<GameElementList> gameElementLists = new List<GameElementList>();
 
         public GameDatabase() { }
+
+        public List<GameElementList> GameElementLists
+        {
+            get
+            {
+                return gameElementLists;
+            }
+        }
 
         public GameElementList this[Type type]
         {

@@ -5,6 +5,8 @@ using System.Collections.Generic;
 using UnityEditor;
 using System.IO;
 using System;
+using System.Runtime.Serialization;
+using System.Xml;
 
 namespace GameDataManager
 {
@@ -16,7 +18,7 @@ namespace GameDataManager
         private static string resourcesFolder = "Resources";
         private static GameDatabase database;
         private static XmlSerializer xmlSerializer;
-        
+
         public static GameDatabase Database
         {
             get
@@ -48,10 +50,11 @@ namespace GameDataManager
             if (database != null)
             {
                 FileStream stream = new FileStream(path, FileMode.Create);
+                
                 Debug.Log("Beginning Serialization");
                 try
                 {
-                    xmlSerializer = new XmlSerializer(typeof(GameDatabase));
+                    xmlSerializer = new XmlSerializer(typeof(GameDatabase),GameUtility.GameElements.ToArray());
                     xmlSerializer.Serialize(stream, database);
                 }
                 catch (Exception e)
@@ -64,7 +67,7 @@ namespace GameDataManager
             }
             else
             {
-                throw new ArgumentNullException("database", "GameDatabase is null, cannot save");
+                CreateDatabase();
             }
 
         }
@@ -84,7 +87,8 @@ namespace GameDataManager
             }
             catch (Exception e)
             {
-                Debug.Log(e.InnerException.ToString());
+                //Debug.Log(e.InnerException.ToString());
+                Debug.Log(e.GetBaseException().ToString());
             }
             Debug.Log("Loaded database from disk: " + database.ToString());
             stream.Close();
