@@ -19,7 +19,18 @@ namespace GameDataManager
                     GUIString guiMember = OnGUIString((GUIString)properties[i].GetValue(gameElement,null));
                     properties[i].SetValue(gameElement, guiMember,null);
                 }
-                    
+                
+                if (properties[i].PropertyType == typeof(GUIInt))
+                {
+                    GUIInt guiMember = OnGUIInt((GUIInt)properties[i].GetValue(gameElement,null));
+                    properties[i].SetValue(gameElement, guiMember,null);
+                }
+                                
+                if (properties[i].PropertyType == typeof(GUIEnum))
+                {
+                    GUIEnum guiMember = OnGUIEnum((GUIEnum)properties[i].GetValue(gameElement,null));
+                    properties[i].SetValue(gameElement, guiMember,null);
+                }
             }
             //for (int i = 0; i < fields.Length; i++)
             //{
@@ -40,18 +51,26 @@ namespace GameDataManager
 
         static PropertyInfo[] GetProperties(GameElement obj)
         {
-            //return obj.GetType().GetFields(BindingFlags.Instance | BindingFlags.FlattenHierarchy | BindingFlags.Public);
+            //return obj.GetType().GetProperties(BindingFlags.Instance | BindingFlags.FlattenHierarchy | BindingFlags.Public);
             return obj.GetType().GetProperties();
         }
 
-        static GUIString OnGUIString(GUIString guiString)
+        static GUIString OnGUIString(GUIString guiMember)
         {
-            guiString.value = EditorGUILayout.TextField(guiString.label, guiString.value);
-            if (guiString.value == "xyz")
-            {
-                Debug.Log("match xyz");
-            }
-            return guiString;
+            guiMember.value = EditorGUILayout.TextField(guiMember.label, guiMember.value);
+            return guiMember;
+        }
+                
+        static GUIInt OnGUIInt(GUIInt guiMember)
+        {
+            guiMember.value = EditorGUILayout.IntField(guiMember.label, guiMember.value);
+            return guiMember;
+        }
+                
+        static GUIEnum OnGUIEnum(GUIEnum guiMember)
+        {
+            guiMember.value = EditorGUILayout.EnumPopupField(guiMember.label, guiMember.value);
+            return guiMember;
         }
     }
 }
