@@ -9,13 +9,17 @@ namespace GameDataManager
 {
     [System.Serializable]
     public class GameElementList 
-        //: IEnumerable
     {
         private string elementTypeAssemblyName;
         private Type elementType;
         private List<GameElement> gameElements = new List<GameElement>();
 
         public GameElementList() { }
+
+        public GameElementList(Type type)
+        {
+            ElementType = type;
+        }
 
         public GameElementType gameElementType { get; set; }
 
@@ -35,7 +39,7 @@ namespace GameDataManager
                 List<string> list = new List<string>();
                 for (int i = 0; i < this.Count; i++)
                 {
-                    list.Add(this[i].name);
+                    list.Add(this[i].Name);
                 }
                 return list;
             }
@@ -49,7 +53,7 @@ namespace GameDataManager
                 List<string> list = new List<string>();
                 for (int i = 0; i < this.Count; i++)
                 {
-                    list.Add(this[i].id);
+                    list.Add(this[i].ID);
                 }
                 return list;
             }
@@ -88,6 +92,10 @@ namespace GameDataManager
         {
             get
             {
+                if (elementType == null)
+                {
+                    elementType = Type.GetType(elementTypeAssemblyName);
+                }
                 return elementType;
             }
 
@@ -105,7 +113,7 @@ namespace GameDataManager
         {
             get
             {
-                return gameElements.Find(x=>x.id.Equals(id));
+                return IDs.Contains(id)? gameElements.Find(x=>x.ID.Equals(id)) : null;
             }
 
             set
@@ -114,9 +122,9 @@ namespace GameDataManager
             }
         }
 
-        public void Add(string name, string id)
+        public void Add(string name, string id, bool isDefault, string parentId)
         {
-            Add((GameElement)Activator.CreateInstance(ElementType, new object[] { name, id }));
+            Add((GameElement)Activator.CreateInstance(ElementType, new object[] { name, id, isDefault, parentId }));
         }
 
         /// <summary>
@@ -138,7 +146,7 @@ namespace GameDataManager
         {
             get
             {
-                return gameElements[index];
+                return (index >= 0 && index <= gameElements.Count - 1)? gameElements[index] : null;
             }
 
             set
@@ -205,5 +213,15 @@ namespace GameDataManager
         //    return gameElements.GetEnumerator();
         //}
         #endregion
+
+        public override string ToString()
+        {
+            return string.Format("[GameElementList]:{0}:{1}", ElementType.Name, Count);
+        }
+
+        public static implicit operator bool(GameElementList item)
+        {
+            return (item != null);
+        }
     }
 }

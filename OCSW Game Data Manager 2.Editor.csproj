@@ -99,9 +99,12 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Assets\Game Data Manager 2\Scripts\Editor\ContextPopup.cs" />
     <Compile Include="Assets\Game Data Manager 2\Scripts\Editor\ElementPropertiesWindow.cs" />
     <Compile Include="Assets\Game Data Manager 2\Scripts\Editor\GUIHelper.cs" />
     <Compile Include="Assets\Game Data Manager 2\Scripts\Editor\GameDataManagerWindow.cs" />
+    <Compile Include="Assets\Game Data Manager 2\Scripts\Editor\MyGUILayout.cs" />
+    <Compile Include="Assets\Game Data Manager 2\Scripts\Editor\ValuesWindow.cs" />
     <Compile Include="Assets\Game Data Manager\Scripts\Editor\AddObjectWindow.cs" />
     <Compile Include="Assets\Game Data Manager\Scripts\Editor\Collections\GameDatabase.cs" />
     <Compile Include="Assets\Game Data Manager\Scripts\Editor\Collections\GameItemList.cs" />
@@ -119,6 +122,7 @@
     <Compile Include="Assets\Game Data Manager\Scripts\Editor\Managers\MySkin.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Assets\Game Data Manager 2\Resources\Database Backup.xml" />
     <None Include="Assets\Game Data Manager 2\Resources\Database.xml" />
     <None Include="Assets\Game Data Manager\Resources\Database.xml" />
   </ItemGroup>

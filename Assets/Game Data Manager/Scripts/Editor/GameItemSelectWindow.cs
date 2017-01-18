@@ -18,7 +18,7 @@ namespace GDM1
         private int itemSelected;
         private GameDatabase myDatabase = DatabaseManager.Database;
         private GameItemList selectedDatabase;
-        private GameItem selectedGameData;
+        //private GameItem selectedGameData;
         public static bool isOpen = false;
 
         public EditorWindow parentWindow;
@@ -169,7 +169,7 @@ namespace GDM1
             rightVerticalStyle.margin = new RectOffset(4, 0, 0, 2);
             GUIStyle scrollStyle = new GUIStyle(GUI.skin.scrollView);
             scrollStyle.normal.background = Resources.Load<Texture2D>("ColdSteelTexture");
-            selectedGameData = null;
+            //selectedGameData = null;
             Rect rect = EditorGUILayout.BeginVertical(leftVerticalStyle, GUILayout.ExpandWidth(true));
             { // Begin Left Pane
                 EditorGUI.DrawRect(rect, Color.white);
@@ -210,7 +210,7 @@ namespace GDM1
                                 {
                                     EditorGUIUtility.keyboardControl = 0;
                                 }
-                                selectedGameData = selectedDatabase[mySelection];
+                                //selectedGameData = selectedDatabase[mySelection];
                             }
                         }
                     }

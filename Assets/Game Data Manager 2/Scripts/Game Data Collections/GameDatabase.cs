@@ -123,5 +123,10 @@ namespace GameDataManager
         //    return gameElementLists.GetEnumerator();
         //}
         #endregion
+
+        public override string ToString()
+        {
+            return string.Format("[GameDatabase] Count: {0}", Count);
+        }
     }
 }

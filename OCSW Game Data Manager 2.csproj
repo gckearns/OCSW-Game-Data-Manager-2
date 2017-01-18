@@ -63,24 +63,36 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Assets\Game Data Manager 2\Scripts\GUIBox.cs" />
+    <Compile Include="Assets\Game Data Manager 2\Scripts\GUIExtractor.cs" />
+    <Compile Include="Assets\Game Data Manager 2\Scripts\GUILayoutOptions.cs" />
+    <Compile Include="Assets\Game Data Manager 2\Scripts\GUIRow.cs" />
     <Compile Include="Assets\Game Data Manager 2\Scripts\Game Data Collections\GameDatabase.cs" />
     <Compile Include="Assets\Game Data Manager 2\Scripts\Game Data Collections\GameElementList.cs" />
+    <Compile Include="Assets\Game Data Manager 2\Scripts\Game Data Collections\StringIntDictionary.cs" />
+    <Compile Include="Assets\Game Data Manager 2\Scripts\Game Data GUIs\GUIBool.cs" />
+    <Compile Include="Assets\Game Data Manager 2\Scripts\Game Data GUIs\GUIDictionary.cs" />
     <Compile Include="Assets\Game Data Manager 2\Scripts\Game Data GUIs\GUIEnum.cs" />
+    <Compile Include="Assets\Game Data Manager 2\Scripts\Game Data GUIs\GUIFloat.cs" />
+    <Compile Include="Assets\Game Data Manager 2\Scripts\Game Data GUIs\GUIGameObject.cs" />
     <Compile Include="Assets\Game Data Manager 2\Scripts\Game Data GUIs\GUIInt.cs" />
-    <Compile Include="Assets\Game Data Manager 2\Scripts\Game Data GUIs\GUIMember.cs" />
+    <Compile Include="Assets\Game Data Manager 2\Scripts\Game Data GUIs\GUIObject.cs" />
     <Compile Include="Assets\Game Data Manager 2\Scripts\Game Data GUIs\GUIString.cs" />
-    <Compile Include="Assets\Game Data Manager 2\Scripts\Game Data Types\Building.cs" />
     <Compile Include="Assets\Game Data Manager 2\Scripts\Game Data Types\Commodity.cs" />
     <Compile Include="Assets\Game Data Manager 2\Scripts\Game Data Types\GameElement.cs" />
-    <Compile Include="Assets\Game Data Manager 2\Scripts\Game Data Types\Ship.cs" />
+    <Compile Include="Assets\Game Data Manager 2\Scripts\Game Data Types\StorageType.cs" />
     <Compile Include="Assets\Game Data Manager 2\Scripts\Game Data Types\Unit.cs" />
     <Compile Include="Assets\Game Data Manager 2\Scripts\GameDatabaseManager.cs" />
     <Compile Include="Assets\Game Data Manager 2\Scripts\GameUtility.cs" />
-    <Compile Include="Assets\Game Data Manager 2\Scripts\MyGUILayout.cs" />
+    <Compile Include="Assets\Game Data Manager 2\Scripts\MyGUILayoutUtility.cs" />
+    <Compile Include="Assets\Game Data Manager 2\Scripts\MyGUIStyle.cs" />
+    <Compile Include="Assets\Game Data Manager 2\Scripts\MyGUIUtility.cs" />
+    <Compile Include="Assets\Game Data Manager 2\Scripts\TestObject.cs" />
     <Compile Include="Assets\Game Data Manager\Scripts\GameEnums.cs" />
     <Compile Include="Assets\Game Data Manager\Scripts\MyGUIUtility.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Assets\Game Data Manager 2\Resources\Database Backup.xml" />
     <None Include="Assets\Game Data Manager 2\Resources\Database.xml" />
     <None Include="Assets\Game Data Manager\Resources\Database.xml" />
   </ItemGroup>

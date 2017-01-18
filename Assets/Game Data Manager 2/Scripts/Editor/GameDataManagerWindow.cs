@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using UnityEditor;
+using System.Runtime.Serialization;
 
 namespace GameDataManager
 {
@@ -11,41 +12,69 @@ namespace GameDataManager
         {
             GameDataManagerWindow window = GetWindow<GameDataManagerWindow>();
             window.Show();
+            TestObject.Test();
         }
+
         [MenuItem("Manager/GDMW Reset")]
         public static void Reset()
         {
             GameDataManagerWindow window = GetWindow<GameDataManagerWindow>();
-            GameDatabaseManager.ResetDatabase();
-            GameDatabaseManager.SaveDatabase();
             window.Close();
+            GameDatabaseManager.ResetDatabase();
         }
 
         GUISkin gSkin;
 
         private int toolSelected;
         private int itemSelected;
-        private GameDatabase myDatabase = GameDatabaseManager.Database;
-        private GameElementList selectedDatabase;
+        private GameDatabase myDatabase;
+        public GameElementList selectedElementList;
         private GameElement selectedGameData;
+        private GameElement[] shownElements;
+
+        GameElement[] ShownElements
+        {
+            get
+            {
+                if (shownElements == null)
+                {
+                    shownElements = new GameElement[0];
+                }
+                return shownElements;
+            }
+        }
+
+        GameDatabase MyDatabase
+        {
+            get
+            {
+                if (myDatabase == null)
+                {
+                    myDatabase = GameDatabaseManager.Database;
+                }
+                return myDatabase;
+            }
+        }
 
         void OnEnable()
         {
             Debug.Log("GameDataManagerWindow script OnEnable");
             minSize = new Vector2(544, 256);
-            gSkin = Resources.Load("gskin") as GUISkin;
+            gSkin = Resources.Load("GUI Skins/gskin") as GUISkin;
+            LoadDatabase();
         }
 
         void OnDisable()
         {
+            Debug.Log("GameDataManagerWindow script OnDisable");
             GameDatabaseManager.SaveDatabase();
         }
 
         private void LoadDatabase()
         {
-            //selectedDatabase = myDatabase[GameUtility.ItemEnums[selectedTool]];
-            selectedDatabase = myDatabase[GameUtility.GameElements[selectedTool]];
-            Debug.Log("Loaded selected database: " + selectedDatabase.ToString());
+            myDatabase = null;
+            selectedElementList = MyDatabase[GameUtility.GameElements[selectedTool]];
+            Debug.Log("Loaded selected database: " + selectedElementList.ToString());
             EditorGUIUtility.keyboardControl = 0;
         }
 
@@ -74,125 +103,162 @@ namespace GameDataManager
             EditorGUILayout.BeginHorizontal(GUILayout.Height(48), GUILayout.Width(144));
             if (GUILayout.Button("New", GUILayout.Width(48), GUILayout.Height(48)))
             {
-                if (!ElementPropertiesWindow.isOpen)
-                {
-                    ElementPropertiesWindow w = ScriptableObject.CreateInstance<ElementPropertiesWindow>();
-                    // validate a selected database
-                    w.elementList = selectedDatabase;
-                    w.parentWindow = this;
-                    w.ShowUtility();
-                }
-                //Refresh and select the new data
+                NewGameElement();
             }
             if (GUILayout.Button("Delete", GUILayout.Width(48), GUILayout.Height(48)))
             {
-                // Put a warning dialogue here
-                // validate a selected database
-                selectedDatabase.Remove(selectedGameData);
+                RemoveSelectedGameElement();
             }
             if (GUILayout.Button("Save", GUILayout.Width(48), GUILayout.Height(48)))
             {
                 GameDatabaseManager.SaveDatabase();
             }
+            if (GUILayout.Button("Load", GUILayout.Width(48), GUILayout.Height(48)))
+            {
+                GameDatabaseManager.LoadDatabase();
+                LoadDatabase();
+            }
             EditorGUILayout.EndHorizontal();
         }
 
         private int selectedTool = -1;
+        public int SelectedTool
+        {
+            get
+            {
+                if (GameUtility.GameElements.Count == 0)
+                {
+                    return -1;
+                }
+                else
+                {
+                    return Mathf.Clamp(selectedTool, 0, GameUtility.GameElements.Count - 1);
+                }
+            }
+            set
+            {
+                if (selectedTool != value)
+                {
+                    selectedTool = value;
+                    LoadDatabase();
+                }
+                selectedTool = value;
+            }
+        }
 
         void MyTabs()
         {
-            EditorGUILayout.BeginHorizontal(GUILayout.Height(32), GUILayout.Width(192));
-            EditorGUI.BeginChangeCheck();
-            selectedTool = MyGUILayout.ToggleBar(selectedTool, GameUtility.ItemTypeStrings);
-            if (EditorGUI.EndChangeCheck())
-                LoadDatabase();
-            EditorGUILayout.EndHorizontal();
+            SelectedTool = MyGUILayout.ToggleBar(SelectedTool, GameUtility.ItemTypeStrings, GUILayout.Height(32), GUILayout.Width(192));
         }
 
-        private string leftSearch;
-        private string rightSearch;
+        private string leftSearch = "";
+        private string rightSearch = "";
         private Vector2 leftScroll;
         private Vector2 rightScroll;
         private int mySelection;
+        private int mSelection;
 
         void MyDataview()
         {
-            Rect rect = EditorGUILayout.BeginHorizontal(GUILayout.ExpandHeight(true));
-            GUIStyle myButton = new GUIStyle(GUI.skin.button);
-            myButton.normal.background = null;
-            GUIStyle leftVerticalStyle = new GUIStyle(GUI.skin.scrollView);
-            leftVerticalStyle.margin = new RectOffset(0, 4, 0, 2);
-            GUIStyle rightVerticalStyle = new GUIStyle(GUI.skin.scrollView);
-            rightVerticalStyle.margin = new RectOffset(4, 0, 0, 2);
-            GUIStyle scrollStyle = new GUIStyle(GUI.skin.scrollView);
-            scrollStyle.normal.background = Resources.Load<Texture2D>("ColdSteelTexture");
-            selectedGameData = null;
-            rect = EditorGUILayout.BeginVertical(leftVerticalStyle, GUILayout.ExpandWidth(true));
+            EditorGUILayout.BeginHorizontal(GUILayout.ExpandHeight(true));
+            {
+                selectedGameData = null;
+                if (selectedElementList == null)
+                {
+                    LoadDatabase();
+                }
+                DataviewLeft();
+                DataviewRight();
+            }
+            EditorGUILayout.EndHorizontal();
+        }
+
+        bool btnOn;
+        public bool showPopup;
+
+        void DataviewLeft()
+        {
+            Rect leftVerticalRect = EditorGUILayout.BeginVertical(MyGUIStyle.LeftVerticalStyle, GUILayout.ExpandWidth(true));
             { // Begin Left Pane
-                EditorGUI.DrawRect(rect, Color.white);
+                EditorGUI.DrawRect(leftVerticalRect, Color.white);
                 leftSearch = EditorGUILayout.TextField("Search", leftSearch, "SearchField");
-                rect = EditorGUILayout.BeginHorizontal(GUILayout.Height(16));
-                {
-                    GUILayout.Button("Name", myButton, GUILayout.MinWidth(96), GUILayout.Height(16));
-                    GUILayout.Button("ID", myButton, GUILayout.MinWidth(48), GUILayout.Height(16));
-                    GUILayout.Button("Category", myButton, GUILayout.MinWidth(64), GUILayout.Height(16));
-                }
-                EditorGUILayout.EndHorizontal();
-                leftScroll = EditorGUILayout.BeginScrollView(leftScroll, scrollStyle);
-                {
-                    EditorGUILayout.BeginHorizontal(GUILayout.Height(16));
+                shownElements = MyGUIUtility.GetFilteredArray(selectedElementList, leftSearch);
+                MyGUILayout.DataTableHeader(new string[] { "Name", "ID", "Category" },null,new float[] { 96, 48, 64 }, 16);
+                leftScroll = EditorGUILayout.BeginScrollView(leftScroll, MyGUIStyle.ScrollStyle);
+                {// Begin Scroll View
+                    #region OldDataTableGUI
+                    //EditorGUILayout.BeginHorizontal(GUILayout.Height(16));
+                    //{
+                    //    if (gameElements != null)
+                    //    {
+                    //        if (gameElements.Length > 0)
+                    //        {
+                    //            if (mySelection >= gameElements.Length)
+                    //            {
+                    //                mySelection = (gameElements.Length - 1);
+                    //            }
+                    //            if (mySelection < 0)
+                    //            {
+                    //                mySelection = 0;
+                    //            }
+                    //            EditorGUI.BeginChangeCheck();
+
+                    //            string[] searchResults = MyGUIUtility.GetNames(gameElements);
+                    //            mySelection = GUILayout.SelectionGrid(mySelection, searchResults, 1, "SelectionButton", GUILayout.MinWidth(96));
+
+                    //            searchResults = MyGUIUtility.GetIDs(gameElements);
+                    //            mySelection = GUILayout.SelectionGrid(mySelection, searchResults, 1, "SelectionButton", GUILayout.MinWidth(64));
+
+                    //            searchResults = MyGUIUtility.GetTypes(gameElements);
+                    //            mySelection = GUILayout.SelectionGrid(mySelection, searchResults, 1, "SelectionButton", GUILayout.MinWidth(64));
+
+                    //            if (EditorGUI.EndChangeCheck())
+                    //            {
+                    //                EditorGUIUtility.keyboardControl = 0;
+                    //            }
+                    //            selectedGameData = gameElements[mySelection];
+                    //        }
+                    //    }
+                    //}
+                    //EditorGUILayout.EndHorizontal();
+                    #endregion
+
+                    GUIRow[] rows = MyGUIUtility.GetGUIRows(ShownElements);
+                    mSelection = MyGUILayout.RowSelection(mSelection, rows, this);
+                    if (mSelection >= 0 && mSelection < ShownElements.Length)
                     {
-                        if (selectedDatabase != null)
-                        {
-                            if (selectedDatabase.Count > 0)
-                            {
-                                if (mySelection >= selectedDatabase.Count)
-                                {
-                                    mySelection = (selectedDatabase.Count - 1);
-                                }
-                                if (mySelection < 0)
-                                {
-                                    mySelection = 0;
-                                }
-                                EditorGUI.BeginChangeCheck();
-                                mySelection = GUILayout.SelectionGrid(mySelection, selectedDatabase.Names.ToArray(), 1, "SelectionButton", GUILayout.MinWidth(96));
-                                mySelection = GUILayout.SelectionGrid(mySelection, selectedDatabase.IDs.ToArray(), 1, "SelectionButton", GUILayout.MinWidth(64));
-                                mySelection = GUILayout.SelectionGrid(mySelection, selectedDatabase.ElementTypes.ToArray(), 1, "SelectionButton", GUILayout.MinWidth(64));
-                                if (EditorGUI.EndChangeCheck())
-                                {
-                                    EditorGUIUtility.keyboardControl = 0;
-                                }
-                                selectedGameData = selectedDatabase[mySelection];
-                            }
-                        }
+                        selectedGameData = ShownElements[mSelection];
                     }
-                    EditorGUILayout.EndHorizontal();
-                }
+                    Repaint();
+                    if (showPopup)
+                    {
+                        showPopup = false;
+                        PopupWindow.Show(new Rect(Event.current.mousePosition, Vector2.zero), new ContextPopup());                        
+                    }
+                }// End Scroll View
                 EditorGUILayout.EndScrollView();
             } // End Left Pane
             EditorGUILayout.EndVertical();
-            rect = EditorGUILayout.BeginVertical(rightVerticalStyle, GUILayout.ExpandWidth(true));
+        }
+
+        void DataviewRight()
+        {
+            Rect rightVerticalRect = EditorGUILayout.BeginVertical(MyGUIStyle.RightVerticalStyle, GUILayout.ExpandWidth(true));
             { // Begin Right Pane
-                EditorGUI.DrawRect(rect, Color.white);
+                EditorGUI.DrawRect(rightVerticalRect, Color.white);
                 rightSearch = EditorGUILayout.TextField("Search", rightSearch, "SearchField");
-                rect = EditorGUILayout.BeginHorizontal(GUILayout.Height(16));
-                {
-                    GUILayout.Button("Field", myButton, GUILayout.Width(128), GUILayout.Height(16));
-                    GUILayout.Button("Value", myButton, GUILayout.MinWidth(96), GUILayout.Height(16));
-                }
-                EditorGUILayout.EndHorizontal();
-                rightScroll = EditorGUILayout.BeginScrollView(rightScroll, scrollStyle);
+                MyGUILayout.DataTableHeader(new string[] { "Field", "Value"}, null, new float[] { 128, 96 }, 16);
+                rightScroll = EditorGUILayout.BeginScrollView(rightScroll, MyGUIStyle.ScrollStyle);
                 {
                     if (selectedGameData != null)
                     {
-                        selectedGameData.OnGUI();
-                        GUIHelper.GetGUI(selectedGameData);
+                        GUIObject[] guiObjects = MyGUIUtility.GetFilteredArray(selectedGameData.GUIData, rightSearch);
+                        GUIHelper.GetGUI(guiObjects);
                     }
                 }
                 EditorGUILayout.EndScrollView();
             } // End Right Pane
             EditorGUILayout.EndVertical();
-            EditorGUILayout.EndHorizontal();
         }
 
         void MyInfobar()
@@ -201,9 +267,42 @@ namespace GameDataManager
             //		EditorGUI.DrawRect(rect, new Color(0.6353f,0.6353f,0.6353f));
             EditorGUI.DrawRect(rect, new Color(0.7608f, 0.7608f, 0.7608f));
             EditorGUILayout.LabelField("Some information", GUILayout.MinWidth(172));
-            EditorGUILayout.LabelField("Object Count:", (selectedDatabase != null) ? selectedDatabase.Count.ToString() : "", GUILayout.MinWidth(172), GUILayout.MaxWidth(196));
-            EditorGUILayout.LabelField("Field Count:", "150", GUILayout.MinWidth(172), GUILayout.MaxWidth(196));
+            EditorGUILayout.LabelField("Object Count:", selectedElementList? ShownElements.Length.ToString() : "", GUILayout.MinWidth(172), GUILayout.MaxWidth(196));
+            EditorGUILayout.LabelField("Field Count:", selectedGameData? selectedGameData.GUIData.Length.ToString() : "0", GUILayout.MinWidth(172), GUILayout.MaxWidth(196));
             EditorGUILayout.EndHorizontal();
+        }
+
+        public void NewGameElement()
+        {
+            if (!ElementPropertiesWindow.isOpen)
+            {
+                ElementPropertiesWindow elementWindow = CreateInstance<ElementPropertiesWindow>();
+                elementWindow.NewGameElement(this);
+            }
+            //Refresh and select the new data
+        }
+
+        public void RemoveSelectedGameElement()
+        {
+            // Put a warning dialogue here
+            // validate a selected database
+            selectedElementList.Remove(selectedGameData);
+        }
+
+        public void ModifySelectedGameElement()
+        {
+            // Put a warning dialogue here
+            // validate a selected database
+            ElementPropertiesWindow elementWindow = CreateInstance<ElementPropertiesWindow>();
+            elementWindow.ModifyGameElement(selectedGameData, this);
+        }
+
+        public void DuplicateSelectedGameElement()
+        {
+            // Put a warning dialogue here
+            // validate a selected database
+            ElementPropertiesWindow elementWindow = CreateInstance<ElementPropertiesWindow>();
+            elementWindow.DuplicateGameElement(selectedGameData, this);
         }
     }
 }

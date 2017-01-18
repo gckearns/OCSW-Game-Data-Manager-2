@@ -14,8 +14,6 @@ namespace GameDataManager
     {
         private static string path = "Assets/Game Data Manager 2/Resources/Database.xml";
         private static string pathFolder = "Assets/Game Data Manager 2/Resources";
-        private static string parentfolder = "Game Data Manager 2/";
-        private static string resourcesFolder = "Resources";
         private static GameDatabase database;
         private static XmlSerializer xmlSerializer;
 
@@ -31,55 +29,48 @@ namespace GameDataManager
             }
         }
 
-        static void CreateDatabase()
+        static void CreateDatabaseFile()
         {
-            database = new GameDatabase();
-            Debug.Log("Created new GameDatabase");
-            SaveDatabase();
-        }
-
-        static void CreateDirectory()
-        {
-            AssetDatabase.CreateFolder(parentfolder, resourcesFolder);
-            Debug.Log(string.Format("Created {0} folder in {1}", resourcesFolder, parentfolder));
-            //        CreateDatabase();
+            FileStream stream = GetSaveStream();
+            try
+            {
+                xmlSerializer = new XmlSerializer(typeof(GameDatabase), GameUtility.GameElements.ToArray());
+                xmlSerializer.Serialize(stream, database);
+            }
+            catch (Exception e)
+            {
+                Debug.Log(e.InnerException.ToString());
+            }
+            stream.Close();
+            Debug.Log("Created new GameDatabase file");
         }
 
         public static void SaveDatabase()
         {
-            if (database != null)
+            GameDatabase gameDatabase = Database;
+            FileStream stream = GetSaveStream();
+            try
             {
-                FileStream stream = new FileStream(path, FileMode.Create);
-                
-                Debug.Log("Beginning Serialization");
-                try
-                {
-                    xmlSerializer = new XmlSerializer(typeof(GameDatabase),GameUtility.GameElements.ToArray());
-                    xmlSerializer.Serialize(stream, database);
-                }
-                catch (Exception e)
-                {
-                    Debug.Log(e.InnerException.ToString());
-                }
-
-                stream.Close();
-                Debug.Log("Saved database");
+                xmlSerializer = new XmlSerializer(typeof(GameDatabase),GameUtility.GameElements.ToArray());
+                xmlSerializer.Serialize(stream, gameDatabase);
             }
-            else
+            catch (Exception e)
             {
-                CreateDatabase();
+                Debug.Log(e.InnerException.ToString());
             }
 
+            stream.Close();
+            Debug.Log("Saved database: " + gameDatabase.ToString());
         }
 
         public static void LoadDatabase()
         {
-            Directory.CreateDirectory(pathFolder);
-            if (!File.Exists(path))
+            if (database == null)
             {
-                CreateDatabase();
-            }
-            FileStream stream = new FileStream(path, FileMode.Open);
+                database = new GameDatabase();
+                Debug.Log("Created new database in memory");
+            } 
+            FileStream stream = GetLoadStream();
             try
             {
                 xmlSerializer = new XmlSerializer(typeof(GameDatabase));
@@ -87,17 +78,46 @@ namespace GameDataManager
             }
             catch (Exception e)
             {
-                //Debug.Log(e.InnerException.ToString());
                 Debug.Log(e.GetBaseException().ToString());
             }
-            Debug.Log("Loaded database from disk: " + database.ToString());
             stream.Close();
+            Debug.Log("Loaded database: " + database.ToString());
+        }
+
+        static FileStream GetLoadStream()
+        {
+            ConfirmDatabaseFile();
+            return new FileStream(path, FileMode.Open);
+        }
+
+        static FileStream GetSaveStream()
+        {
+            ConfirmDatabaseDirectory();
+            return new FileStream(path, FileMode.Create);
+        }
+
+        static void ConfirmDatabaseDirectory()
+        {
+            if (!Directory.Exists(pathFolder))
+            {
+                Directory.CreateDirectory(pathFolder);
+            }
+        }
+
+        static void ConfirmDatabaseFile()
+        {
+            ConfirmDatabaseDirectory();
+            if (!File.Exists(path))
+            {
+                CreateDatabaseFile();
+            }
         }
 
         public static void ResetDatabase()
         {
             Debug.Log("Database reset.");
-            database = null;
+            database = new GameDatabase();
+            SaveDatabase();
         }
     }
 }

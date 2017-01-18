@@ -1,14 +1,48 @@
 using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using System;
+using System.Xml.Serialization;
 
 namespace GameDataManager
 {
     public class StringIntDictionary
     {
-        private List<string> keys;
-        private List<int> values;
-        
+        private List<string> keys = new List<string>();
+        private List<int> values = new List<int>();
+        private Type keyType;
+        private string keyTypeAssemblyName;
+
+        public StringIntDictionary() { }
+
+        public string KeyTypeAssemblyName
+        {
+            get
+            {
+                return keyType.AssemblyQualifiedName;
+            }
+            set
+            {
+                keyTypeAssemblyName = value;
+                keyType = Type.GetType(keyTypeAssemblyName);
+            }
+        }
+
+        [XmlIgnore]
+        public Type KeyType
+        {
+            get
+            {
+                return keyType;
+            }
+
+            set
+            {
+                keyType = value;
+                keyTypeAssemblyName = keyType.AssemblyQualifiedName;
+            }
+        }
+
         public string[] Keys
         {
             get
@@ -44,7 +78,7 @@ namespace GameDataManager
                     }
                     if (ContainsKey(key))
                     {
-                        return amounts[keys.IndexOf(key)];
+                        return values[keys.IndexOf(key)];
                     }
                     else
                     {
@@ -68,7 +102,7 @@ namespace GameDataManager
                     }
                     if (ContainsKey(key))
                     {
-                        amounts[keys.IndexOf(key)] = value;
+                        values[keys.IndexOf(key)] = value;
                     }
                     else
                     {
@@ -135,8 +169,23 @@ namespace GameDataManager
                     return false;
                 }
             }
-            
-            public bool TryGetValue(string key, out int value)
+
+        public void RemoveAt(int index)
+        {
+            if (index < 0)
+            {
+                throw new ArgumentOutOfRangeException("index cannot be negative");
+            }
+
+            if (index >= Count)
+            {
+                throw new ArgumentOutOfRangeException("index out of range");
+            }
+                keys.RemoveAt(index);
+                values.RemoveAt(index);
+        }
+
+        public bool TryGetValue(string key, out int value)
             {
                 if (key == null)
                 {
@@ -144,7 +193,7 @@ namespace GameDataManager
                 }
                 if (ContainsKey(key))
                 {
-                    value = amounts[keys.IndexOf(key)];
+                    value = values[keys.IndexOf(key)];
                     return true;
                 }
                 else

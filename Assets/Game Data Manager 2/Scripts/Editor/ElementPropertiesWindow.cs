@@ -9,12 +9,70 @@ namespace GameDataManager
 {
     public class ElementPropertiesWindow : EditorWindow
     {
-
+        public GameElement gameElement;
+        public System.Type gameElementType;
         public string objectName = "New Object";
-        public string objectID = "newobject";
+        public string objectId = "newobject";
+        public bool isDefault = false;
+        public string parentId = "default";
+        int parentSelected;
         public static bool isOpen = false;
         public GameElementList elementList;
         public EditorWindow parentWindow;
+        WindowMode mode;
+
+        public void NewGameElement(GameDataManagerWindow window)
+        {
+            gameElementType = window.selectedElementList.ElementType;
+            elementList = window.selectedElementList;
+            parentWindow = window;
+            gameElement = (GameElement)Activator.CreateInstance(gameElementType, null);
+            gameElement.Name = objectName;
+            gameElement.ID = objectId;
+            mode = WindowMode.Add;
+            ShowUtility();
+        }
+
+        public void ModifyGameElement(GameElement element, GameDataManagerWindow window)
+        {
+            gameElementType = window.selectedElementList.ElementType;
+            elementList = window.selectedElementList;
+            parentWindow = window;
+            gameElement = element;
+            mode = WindowMode.Modify;
+            objectId = gameElement.ID;
+            ShowUtility();
+        }
+
+        public void DuplicateGameElement(GameElement element, GameDataManagerWindow window)
+        {
+            gameElementType = window.selectedElementList.ElementType;
+            elementList = window.selectedElementList;
+            parentWindow = window;
+            gameElement = (GameElement)Activator.CreateInstance(gameElementType, new object[] { element });
+            objectName = gameElement.Name;
+            objectId = gameElement.ID;
+            mode = WindowMode.Duplicate;
+            SuggestID();
+            ShowUtility();
+        }
+
+        int ParentSelected
+        {
+            get
+            {
+                GameElement element = elementList[gameElement.ParentId];
+                return element? elementList.IndexOf(element) + 1 : 0;
+            }
+            set
+            {
+                GameElement element = elementList[value - 1];
+                string id = "";
+                if (element)
+                    id = element.ID;
+                gameElement.ParentId = id;
+            }
+        }
 
         void OnDisable()
         {
@@ -26,10 +84,10 @@ namespace GameDataManager
             isOpen = true;
             EditorGUILayout.BeginVertical(GUILayout.ExpandHeight(true));
             {
-                objectName = EditorGUILayout.TextField("Name", objectName);
+                gameElement.Name = EditorGUILayout.TextField("Name", gameElement.Name);
                 EditorGUILayout.BeginHorizontal();
                 {
-                    objectID = EditorGUILayout.TextField("ID", objectID);
+                    objectId = EditorGUILayout.TextField("ID", objectId);
                     if (GUILayout.Button("Suggest"))
                     {
                         EditorGUIUtility.keyboardControl = 0;
@@ -37,6 +95,10 @@ namespace GameDataManager
                     }
                 }
                 EditorGUILayout.EndHorizontal();
+                isDefault = EditorGUILayout.Toggle("Defines Defaults", isDefault);
+                List<string> parentList = new List<string> { " " };
+                parentList.AddRange(elementList.Names.ToArray());
+                ParentSelected = EditorGUILayout.Popup("Parent", ParentSelected, parentList.ToArray());
             }
             EditorGUILayout.EndVertical();
             EditorGUILayout.BeginHorizontal();
@@ -61,14 +123,15 @@ namespace GameDataManager
 
         void ValidateID()
         {
-            if (IsValidID(objectID))
+            if (IsValidID(objectId))
             {
-                //database.Add(database.newItemConstructor(database.itemType, objectName, objectID));
-                //elementList.Add(GameUtility.GetConstructor(elementList.gameElementType)(elementList.gameElementType, objectName, objectID));
-                elementList.Add(objectName, objectID);
+                gameElement.ID = objectId;
+                if (mode == WindowMode.Add || mode == WindowMode.Duplicate)
+                {
+                    elementList.Add(gameElement);
+                }
                 parentWindow.Focus();
                 Close();
-                //            FocusWindowIfItsOpen<DataManagerWindow> ();
             }
             else
             {
@@ -80,7 +143,7 @@ namespace GameDataManager
         void SuggestID()
         {
             StringBuilder sb = new StringBuilder();
-            List<char> charList = new List<char>(objectName.ToCharArray()); //convert the name field to a char array
+            List<char> charList = new List<char>(gameElement.Name.ToCharArray()); //convert the name field to a char array
             foreach (char c in charList)
             { //iterate through each char in the char array
                 if (!char.IsWhiteSpace(c))
@@ -101,16 +164,30 @@ namespace GameDataManager
                 appendInt++;
                 appended = true;
             }
-            objectID = tryID;
+            objectId = tryID;
         }
 
         bool IsValidID(string checkID)
         {
-            if (elementList == null)
+            if (mode == WindowMode.Modify && objectId == gameElement.ID)
+            {
+                return true;
+            }
+            else if (elementList)
+            {
+                return !elementList.IDs.Contains(checkID);
+            }
+            else
             {
                 throw new NullReferenceException("Database not selected");
             }
-            return !elementList.IDs.Contains(checkID);
         }
+    }
+
+    enum WindowMode
+    {
+        Add,
+        Modify,
+        Duplicate
     }
 }

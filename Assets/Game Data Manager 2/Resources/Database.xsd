@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="Windows-1252"?>
+<xs:schema xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xs="http://www.w3.org/2001/XMLSchema" attributeFormDefault="unqualified" elementFormDefault="qualified">
+  <xsd:element name="GameDatabase">
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element name="GameElementLists">
+          <xsd:complexType>
+            <xsd:sequence>
+              <xsd:element maxOccurs="unbounded" name="GameElementList">
+                <xsd:complexType>
+                  <xsd:sequence>
+                    <xsd:element name="gameElementType" type="xsd:string" />
+                    <xsd:element name="gameItems">
+                      <xsd:complexType>
+                        <xsd:sequence>
+                          <xsd:element maxOccurs="unbounded" name="GameElement">
+                            <xsd:complexType>
+                              <xsd:sequence>
+                                <xsd:element name="index" type="xsd:unsignedByte" />
+                                <xsd:element name="gameElementType" type="xsd:string" />
+                                <xsd:element name="Name" type="xsd:string" />
+                                <xsd:element name="ID" type="xsd:string" />
+                                <xsd:element minOccurs="0" name="StorageType" type="xsd:string" />
+                                <xsd:element minOccurs="0" name="StorageTypeAssemblyName" type="xsd:string" />
+                                <xsd:element minOccurs="0" name="PriceMin" type="xsd:unsignedByte" />
+                                <xsd:element minOccurs="0" name="PriceMax" type="xsd:unsignedByte" />
+                                <xsd:element minOccurs="0" name="UnitType" type="xsd:string" />
+                                <xsd:element minOccurs="0" name="PrefabPath" />
+                                <xsd:element minOccurs="0" name="Size" type="xsd:unsignedByte" />
+                                <xsd:element minOccurs="0" name="ConstructTime" type="xsd:unsignedByte" />
+                                <xsd:element minOccurs="0" name="YieldTime" type="xsd:unsignedByte" />
+                                <xsd:element minOccurs="0" name="Costs">
+                                  <xsd:complexType>
+                                    <xsd:sequence>
+                                      <xsd:element name="KeyTypeAssemblyName" type="xsd:string" />
+                                      <xsd:element name="Keys">
+                                        <xsd:complexType>
+                                          <xsd:sequence minOccurs="0">
+                                            <xsd:element maxOccurs="unbounded" name="string" type="xsd:string" />
+                                          </xsd:sequence>
+                                        </xsd:complexType>
+                                      </xsd:element>
+                                      <xsd:element name="Values">
+                                        <xsd:complexType>
+                                          <xsd:sequence minOccurs="0">
+                                            <xsd:element maxOccurs="unbounded" name="int" type="xsd:unsignedByte" />
+                                          </xsd:sequence>
+                                        </xsd:complexType>
+                                      </xsd:element>
+                                    </xsd:sequence>
+                                  </xsd:complexType>
+                                </xsd:element>
+                                <xsd:element minOccurs="0" name="Yields">
+                                  <xsd:complexType>
+                                    <xsd:sequence>
+                                      <xsd:element name="KeyTypeAssemblyName" type="xsd:string" />
+                                      <xsd:element name="Keys">
+                                        <xsd:complexType>
+                                          <xsd:sequence minOccurs="0">
+                                            <xsd:element maxOccurs="unbounded" name="string" type="xsd:string" />
+                                          </xsd:sequence>
+                                        </xsd:complexType>
+                                      </xsd:element>
+                                      <xsd:element name="Values">
+                                        <xsd:complexType>
+                                          <xsd:sequence minOccurs="0">
+                                            <xsd:element maxOccurs="unbounded" name="int" type="xsd:unsignedByte" />
+                                          </xsd:sequence>
+                                        </xsd:complexType>
+                                      </xsd:element>
+                                    </xsd:sequence>
+                                  </xsd:complexType>
+                                </xsd:element>
+                                <xsd:element minOccurs="0" name="Storage">
+                                  <xsd:complexType>
+                                    <xsd:sequence>
+                                      <xsd:element name="KeyTypeAssemblyName" type="xsd:string" />
+                                      <xsd:element name="Keys">
+                                        <xsd:complexType>
+                                          <xsd:sequence minOccurs="0">
+                                            <xsd:element maxOccurs="unbounded" name="string" type="xsd:string" />
+                                          </xsd:sequence>
+                                        </xsd:complexType>
+                                      </xsd:element>
+                                      <xsd:element name="Values">
+                                        <xsd:complexType>
+                                          <xsd:sequence minOccurs="0">
+                                            <xsd:element maxOccurs="unbounded" name="int" type="xsd:unsignedByte" />
+                                          </xsd:sequence>
+                                        </xsd:complexType>
+                                      </xsd:element>
+                                    </xsd:sequence>
+                                  </xsd:complexType>
+                                </xsd:element>
+                                <xsd:element minOccurs="0" name="Category" type="xsd:string" />
+                                <xsd:element minOccurs="0" name="Description" type="xsd:string" />
+                                <xsd:element minOccurs="0" name="Power" type="xsd:short" />
+                                <xsd:element minOccurs="0" name="Workers" type="xsd:byte" />
+                              </xsd:sequence>
+                            </xsd:complexType>
+                          </xsd:element>
+                        </xsd:sequence>
+                      </xsd:complexType>
+                    </xsd:element>
+                    <xsd:element name="ElementTypeAssemblyName" type="xsd:string" />
+                  </xsd:sequence>
+                </xsd:complexType>
+              </xsd:element>
+            </xsd:sequence>
+          </xsd:complexType>
+        </xsd:element>
+      </xsd:sequence>
+    </xsd:complexType>
+  </xsd:element>
+</xs:schema>

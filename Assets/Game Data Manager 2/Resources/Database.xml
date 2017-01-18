@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="Windows-1252"?>
+<GameDatabase xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <GameElementLists>
+    <GameElementList>
+      <gameElementType>None</gameElementType>
+      <gameItems>
+        <GameElement xsi:type="Unit">
+          <index>0</index>
+          <gameElementType>None</gameElementType>
+          <Name>House</Name>
+          <ID>house</ID>
+          <IsDefault>false</IsDefault>
+          <ParentId />
+          <UnitType>None</UnitType>
+          <PrefabPath />
+          <Size>1</Size>
+          <ConstructTime>99</ConstructTime>
+          <YieldTime>99</YieldTime>
+          <Costs>
+            <KeyTypeAssemblyName>GameDataManager.Commodity, Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null</KeyTypeAssemblyName>
+            <Keys>
+              <string>metal</string>
+              <string>water</string>
+            </Keys>
+            <Values>
+              <int>5</int>
+              <int>5</int>
+            </Values>
+          </Costs>
+          <Yields>
+            <KeyTypeAssemblyName>GameDataManager.Commodity, Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null</KeyTypeAssemblyName>
+            <Keys>
+              <string>metal</string>
+              <string>water</string>
+            </Keys>
+            <Values>
+              <int>5</int>
+              <int>5</int>
+            </Values>
+          </Yields>
+          <Storage>
+            <KeyTypeAssemblyName>GameDataManager.StorageType, Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null</KeyTypeAssemblyName>
+            <Keys>
+              <string>solid</string>
+              <string>liquid</string>
+            </Keys>
+            <Values>
+              <int>5</int>
+              <int>5</int>
+            </Values>
+          </Storage>
+          <Category>Housing</Category>
+          <Description>Abcd</Description>
+          <Power>-1000</Power>
+          <Workers>-4</Workers>
+        </GameElement>
+        <GameElement xsi:type="Unit">
+          <index>0</index>
+          <gameElementType>None</gameElementType>
+          <Name>Ship</Name>
+          <ID>ship</ID>
+          <IsDefault>false</IsDefault>
+          <ParentId />
+          <UnitType>None</UnitType>
+          <PrefabPath />
+          <Size>1</Size>
+          <ConstructTime>0</ConstructTime>
+          <YieldTime>0</YieldTime>
+          <Costs>
+            <KeyTypeAssemblyName>GameDataManager.Commodity, Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null</KeyTypeAssemblyName>
+            <Keys />
+            <Values />
+          </Costs>
+          <Yields>
+            <KeyTypeAssemblyName>GameDataManager.Commodity, Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null</KeyTypeAssemblyName>
+            <Keys />
+            <Values />
+          </Yields>
+          <Storage>
+            <KeyTypeAssemblyName>GameDataManager.StorageType, Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null</KeyTypeAssemblyName>
+            <Keys />
+            <Values />
+          </Storage>
+          <Category>None</Category>
+          <Description />
+          <Power>0</Power>
+          <Workers>0</Workers>
+        </GameElement>
+      </gameItems>
+      <ElementTypeAssemblyName>GameDataManager.Unit, Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null</ElementTypeAssemblyName>
+    </GameElementList>
+    <GameElementList>
+      <gameElementType>None</gameElementType>
+      <gameItems>
+        <GameElement xsi:type="StorageType">
+          <index>0</index>
+          <gameElementType>None</gameElementType>
+          <Name>Solid</Name>
+          <ID>solid</ID>
+          <IsDefault>false</IsDefault>
+          <ParentId />
+        </GameElement>
+        <GameElement xsi:type="StorageType">
+          <index>0</index>
+          <gameElementType>None</gameElementType>
+          <Name>Liquid</Name>
+          <ID>liquid</ID>
+          <IsDefault>false</IsDefault>
+          <ParentId />
+        </GameElement>
+      </gameItems>
+      <ElementTypeAssemblyName>GameDataManager.StorageType, Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null</ElementTypeAssemblyName>
+    </GameElementList>
+    <GameElementList>
+      <gameElementType>None</gameElementType>
+      <gameItems>
+        <GameElement xsi:type="Commodity">
+          <index>0</index>
+          <gameElementType>None</gameElementType>
+          <Name>Metal</Name>
+          <ID>metal</ID>
+          <IsDefault>false</IsDefault>
+          <ParentId />
+          <StorageType>solid</StorageType>
+          <StorageTypeAssemblyName>GameDataManager.StorageType, Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null</StorageTypeAssemblyName>
+          <PriceMin>1</PriceMin>
+          <PriceMax>2</PriceMax>
+        </GameElement>
+        <GameElement xsi:type="Commodity">
+          <index>0</index>
+          <gameElementType>None</gameElementType>
+          <Name>Water</Name>
+          <ID>water</ID>
+          <IsDefault>false</IsDefault>
+          <ParentId />
+          <StorageType>liquid</StorageType>
+          <StorageTypeAssemblyName>GameDataManager.StorageType, Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null</StorageTypeAssemblyName>
+          <PriceMin>2</PriceMin>
+          <PriceMax>3</PriceMax>
+        </GameElement>
+      </gameItems>
+      <ElementTypeAssemblyName>GameDataManager.Commodity, Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null</ElementTypeAssemblyName>
+    </GameElementList>
+  </GameElementLists>
+</GameDatabase>
